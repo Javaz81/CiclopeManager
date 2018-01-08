@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PersonaleViewDlg" widgetVar="PersonaleViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewPersonaleTitle}">
+            <h:form id="PersonaleViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{personaleController.selected != null}">
+                        <h:outputText value="#{bundle.ViewPersonaleLabel_idPersonale}"/>
+                        <h:outputText value="#{personaleController.selected.idPersonale}" title="#{bundle.ViewPersonaleTitle_idPersonale}"/>
+                        <h:outputText value="#{bundle.ViewPersonaleLabel_nome}"/>
+                        <h:outputText value="#{personaleController.selected.nome}" title="#{bundle.ViewPersonaleTitle_nome}"/>
+                        <h:outputText value="#{bundle.ViewPersonaleLabel_cognome}"/>
+                        <h:outputText value="#{personaleController.selected.cognome}" title="#{bundle.ViewPersonaleTitle_cognome}"/>
+                        <h:outputText value="#{bundle.ViewPersonaleLabel_posizione}"/>
+                        <h:outputText value="#{personaleController.selected.posizione}" title="#{bundle.ViewPersonaleTitle_posizione}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="PersonaleViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

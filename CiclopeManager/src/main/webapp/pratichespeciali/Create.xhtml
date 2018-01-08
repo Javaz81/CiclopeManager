@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PratichespecialiCreateDlg" widgetVar="PratichespecialiCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePratichespecialiTitle}">
+            <h:form id="PratichespecialiCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pratichespecialiController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreatePratichespecialiLabel_idPraticaSpeciale}" for="idPraticaSpeciale" />
+                        <p:inputText id="idPraticaSpeciale" value="#{pratichespecialiController.selected.idPraticaSpeciale}" title="#{bundle.CreatePratichespecialiTitle_idPraticaSpeciale}" required="true" requiredMessage="#{bundle.CreatePratichespecialiRequiredMessage_idPraticaSpeciale}"/>
+                        <p:outputLabel value="#{bundle.CreatePratichespecialiLabel_descrizione}" for="descrizione" />
+                        <p:inputText id="descrizione" value="#{pratichespecialiController.selected.descrizione}" title="#{bundle.CreatePratichespecialiTitle_descrizione}" required="true" requiredMessage="#{bundle.CreatePratichespecialiRequiredMessage_descrizione}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pratichespecialiController.create}" value="#{bundle.Save}" update="display,:PratichespecialiListForm:datalist,:growl" oncomplete="handleSubmit(args,'PratichespecialiCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PratichespecialiCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

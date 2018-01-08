@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TipolavoroCreateDlg" widgetVar="TipolavoroCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateTipolavoroTitle}">
+            <h:form id="TipolavoroCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{tipolavoroController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateTipolavoroLabel_idTipoLavoro}" for="idTipoLavoro" />
+                        <p:inputText id="idTipoLavoro" value="#{tipolavoroController.selected.idTipoLavoro}" title="#{bundle.CreateTipolavoroTitle_idTipoLavoro}" required="true" requiredMessage="#{bundle.CreateTipolavoroRequiredMessage_idTipoLavoro}"/>
+                        <p:outputLabel value="#{bundle.CreateTipolavoroLabel_codice}" for="codice" />
+                        <p:inputText id="codice" value="#{tipolavoroController.selected.codice}" title="#{bundle.CreateTipolavoroTitle_codice}" required="true" requiredMessage="#{bundle.CreateTipolavoroRequiredMessage_codice}"/>
+                        <p:outputLabel value="#{bundle.CreateTipolavoroLabel_descrizione}" for="descrizione" />
+                        <p:inputText id="descrizione" value="#{tipolavoroController.selected.descrizione}" title="#{bundle.CreateTipolavoroTitle_descrizione}" />
+                        <p:outputLabel value="#{bundle.CreateTipolavoroLabel_categoria}" for="categoria" />
+                        <p:selectOneMenu id="categoria" value="#{tipolavoroController.selected.categoria}" required="true" requiredMessage="#{bundle.EditTipolavoroRequiredMessage_categoria}">
+                            <f:selectItems value="#{categoriatipolavoroController.itemsAvailableSelectOne}"
+                                           var="categoriaItem"
+                                           itemValue="#{categoriaItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tipolavoroController.create}" value="#{bundle.Save}" update="display,:TipolavoroListForm:datalist,:growl" oncomplete="handleSubmit(args,'TipolavoroCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="TipolavoroCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

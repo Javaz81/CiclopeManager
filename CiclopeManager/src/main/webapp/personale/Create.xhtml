@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PersonaleCreateDlg" widgetVar="PersonaleCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePersonaleTitle}">
+            <h:form id="PersonaleCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{personaleController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreatePersonaleLabel_idPersonale}" for="idPersonale" />
+                        <p:inputText id="idPersonale" value="#{personaleController.selected.idPersonale}" title="#{bundle.CreatePersonaleTitle_idPersonale}" required="true" requiredMessage="#{bundle.CreatePersonaleRequiredMessage_idPersonale}"/>
+                        <p:outputLabel value="#{bundle.CreatePersonaleLabel_nome}" for="nome" />
+                        <p:inputText id="nome" value="#{personaleController.selected.nome}" title="#{bundle.CreatePersonaleTitle_nome}" required="true" requiredMessage="#{bundle.CreatePersonaleRequiredMessage_nome}"/>
+                        <p:outputLabel value="#{bundle.CreatePersonaleLabel_cognome}" for="cognome" />
+                        <p:inputText id="cognome" value="#{personaleController.selected.cognome}" title="#{bundle.CreatePersonaleTitle_cognome}" required="true" requiredMessage="#{bundle.CreatePersonaleRequiredMessage_cognome}"/>
+                        <p:outputLabel value="#{bundle.CreatePersonaleLabel_posizione}" for="posizione" />
+                        <p:inputText id="posizione" value="#{personaleController.selected.posizione}" title="#{bundle.CreatePersonaleTitle_posizione}" required="true" requiredMessage="#{bundle.CreatePersonaleRequiredMessage_posizione}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{personaleController.create}" value="#{bundle.Save}" update="display,:PersonaleListForm:datalist,:growl" oncomplete="handleSubmit(args,'PersonaleCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PersonaleCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

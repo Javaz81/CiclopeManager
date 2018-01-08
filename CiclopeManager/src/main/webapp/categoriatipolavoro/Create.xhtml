@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CategoriatipolavoroCreateDlg" widgetVar="CategoriatipolavoroCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateCategoriatipolavoroTitle}">
+            <h:form id="CategoriatipolavoroCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{categoriatipolavoroController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateCategoriatipolavoroLabel_idCategoriaTipoLavoro}" for="idCategoriaTipoLavoro" />
+                        <p:inputText id="idCategoriaTipoLavoro" value="#{categoriatipolavoroController.selected.idCategoriaTipoLavoro}" title="#{bundle.CreateCategoriatipolavoroTitle_idCategoriaTipoLavoro}" required="true" requiredMessage="#{bundle.CreateCategoriatipolavoroRequiredMessage_idCategoriaTipoLavoro}"/>
+                        <p:outputLabel value="#{bundle.CreateCategoriatipolavoroLabel_nome}" for="nome" />
+                        <p:inputText id="nome" value="#{categoriatipolavoroController.selected.nome}" title="#{bundle.CreateCategoriatipolavoroTitle_nome}" required="true" requiredMessage="#{bundle.CreateCategoriatipolavoroRequiredMessage_nome}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{categoriatipolavoroController.create}" value="#{bundle.Save}" update="display,:CategoriatipolavoroListForm:datalist,:growl" oncomplete="handleSubmit(args,'CategoriatipolavoroCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="CategoriatipolavoroCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

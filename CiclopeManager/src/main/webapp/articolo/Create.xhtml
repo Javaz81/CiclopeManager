@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ArticoloCreateDlg" widgetVar="ArticoloCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateArticoloTitle}">
+            <h:form id="ArticoloCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{articoloController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateArticoloLabel_idArticolo}" for="idArticolo" />
+                        <p:inputText id="idArticolo" value="#{articoloController.selected.idArticolo}" title="#{bundle.CreateArticoloTitle_idArticolo}" required="true" requiredMessage="#{bundle.CreateArticoloRequiredMessage_idArticolo}"/>
+                        <p:outputLabel value="#{bundle.CreateArticoloLabel_descrizione}" for="descrizione" />
+                        <p:inputText id="descrizione" value="#{articoloController.selected.descrizione}" title="#{bundle.CreateArticoloTitle_descrizione}" required="true" requiredMessage="#{bundle.CreateArticoloRequiredMessage_descrizione}"/>
+                        <p:outputLabel value="#{bundle.CreateArticoloLabel_scortaRimanente}" for="scortaRimanente" />
+                        <p:inputText id="scortaRimanente" value="#{articoloController.selected.scortaRimanente}" title="#{bundle.CreateArticoloTitle_scortaRimanente}" required="true" requiredMessage="#{bundle.CreateArticoloRequiredMessage_scortaRimanente}"/>
+                        <p:outputLabel value="#{bundle.CreateArticoloLabel_scortaMinima}" for="scortaMinima" />
+                        <p:inputText id="scortaMinima" value="#{articoloController.selected.scortaMinima}" title="#{bundle.CreateArticoloTitle_scortaMinima}" required="true" requiredMessage="#{bundle.CreateArticoloRequiredMessage_scortaMinima}"/>
+                        <p:outputLabel value="#{bundle.CreateArticoloLabel_unitaDiMisura}" for="unitaDiMisura" />
+                        <p:inputText id="unitaDiMisura" value="#{articoloController.selected.unitaDiMisura}" title="#{bundle.CreateArticoloTitle_unitaDiMisura}" required="true" requiredMessage="#{bundle.CreateArticoloRequiredMessage_unitaDiMisura}"/>
+                        <p:outputLabel value="#{bundle.CreateArticoloLabel_approvvigionamento}" for="approvvigionamento" />
+                        <p:inputText id="approvvigionamento" value="#{articoloController.selected.approvvigionamento}" title="#{bundle.CreateArticoloTitle_approvvigionamento}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{articoloController.create}" value="#{bundle.Save}" update="display,:ArticoloListForm:datalist,:growl" oncomplete="handleSubmit(args,'ArticoloCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ArticoloCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

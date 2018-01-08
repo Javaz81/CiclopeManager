@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VeicoloEditDlg" widgetVar="VeicoloEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditVeicoloTitle}">
+            <h:form id="VeicoloEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{veicoloController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_idVeicolo}" for="idVeicolo" />
+                        <p:inputText id="idVeicolo" value="#{veicoloController.selected.idVeicolo}" title="#{bundle.EditVeicoloTitle_idVeicolo}" required="true" requiredMessage="#{bundle.EditVeicoloRequiredMessage_idVeicolo}"/>
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_marca}" for="marca" />
+                        <p:inputText id="marca" value="#{veicoloController.selected.marca}" title="#{bundle.EditVeicoloTitle_marca}" />
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_modello}" for="modello" />
+                        <p:inputText id="modello" value="#{veicoloController.selected.modello}" title="#{bundle.EditVeicoloTitle_modello}" />
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_targa}" for="targa" />
+                        <p:inputText id="targa" value="#{veicoloController.selected.targa}" title="#{bundle.EditVeicoloTitle_targa}" />
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_anno}" for="anno" />
+                        <p:inputText id="anno" value="#{veicoloController.selected.anno}" title="#{bundle.EditVeicoloTitle_anno}" />
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_tipo}" for="tipo" />
+                        <p:inputText id="tipo" value="#{veicoloController.selected.tipo}" title="#{bundle.EditVeicoloTitle_tipo}" />
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_matricola}" for="matricola" />
+                        <p:inputText id="matricola" value="#{veicoloController.selected.matricola}" title="#{bundle.EditVeicoloTitle_matricola}" required="true" requiredMessage="#{bundle.EditVeicoloRequiredMessage_matricola}"/>
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_cliente}" for="cliente" />
+                        <p:selectOneMenu id="cliente" value="#{veicoloController.selected.cliente}" >
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{clienteController.itemsAvailableSelectOne}"
+                                           var="clienteItem"
+                                           itemValue="#{clienteItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{veicoloController.update}" value="#{bundle.Save}" update="display,:VeicoloListForm:datalist,:growl" oncomplete="handleSubmit(args, 'VeicoloEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="VeicoloEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

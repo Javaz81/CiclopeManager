@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PersonaleEditDlg" widgetVar="PersonaleEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditPersonaleTitle}">
+            <h:form id="PersonaleEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{personaleController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditPersonaleLabel_idPersonale}" for="idPersonale" />
+                        <p:inputText id="idPersonale" value="#{personaleController.selected.idPersonale}" title="#{bundle.EditPersonaleTitle_idPersonale}" required="true" requiredMessage="#{bundle.EditPersonaleRequiredMessage_idPersonale}"/>
+                        <p:outputLabel value="#{bundle.EditPersonaleLabel_nome}" for="nome" />
+                        <p:inputText id="nome" value="#{personaleController.selected.nome}" title="#{bundle.EditPersonaleTitle_nome}" required="true" requiredMessage="#{bundle.EditPersonaleRequiredMessage_nome}"/>
+                        <p:outputLabel value="#{bundle.EditPersonaleLabel_cognome}" for="cognome" />
+                        <p:inputText id="cognome" value="#{personaleController.selected.cognome}" title="#{bundle.EditPersonaleTitle_cognome}" required="true" requiredMessage="#{bundle.EditPersonaleRequiredMessage_cognome}"/>
+                        <p:outputLabel value="#{bundle.EditPersonaleLabel_posizione}" for="posizione" />
+                        <p:inputText id="posizione" value="#{personaleController.selected.posizione}" title="#{bundle.EditPersonaleTitle_posizione}" required="true" requiredMessage="#{bundle.EditPersonaleRequiredMessage_posizione}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{personaleController.update}" value="#{bundle.Save}" update="display,:PersonaleListForm:datalist,:growl" oncomplete="handleSubmit(args, 'PersonaleEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PersonaleEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
