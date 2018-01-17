@@ -4,6 +4,7 @@ import com.javasoft.ciclopemanager.ejb.entities.Articolo;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil.PersistAction;
 import com.javasoft.ciclopemanager.ejb.session.ArticoloFacade;
+import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +28,7 @@ public class ArticoloController implements Serializable {
     private com.javasoft.ciclopemanager.ejb.session.ArticoloFacade ejbFacade;
     private List<Articolo> items = null;
     private Articolo selected;
+    private Articolo copySelected;
 
     public ArticoloController() {
     }
@@ -53,6 +55,11 @@ public class ArticoloController implements Serializable {
         selected = new Articolo();
         initializeEmbeddableKey();
         return selected;
+    }
+    
+    public Articolo prepareEdit(){
+        copySelected = selected.deepClone();
+        return copySelected;
     }
 
     public void create() {
@@ -86,12 +93,15 @@ public class ArticoloController implements Serializable {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    if(persistAction == PersistAction.CREATE)
+                        getFacade().create(selected);
+                    else
+                        getFacade().edit(selected);
                 } else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (EJBException | FacadeException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
@@ -102,7 +112,8 @@ public class ArticoloController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
-            } catch (Exception ex) {
+                    selected.restoreFromClone(copySelected);
+                } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }

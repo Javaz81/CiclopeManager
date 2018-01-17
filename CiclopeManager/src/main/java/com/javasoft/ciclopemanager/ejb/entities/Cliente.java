@@ -145,7 +145,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "com.javasoft.ciclopemanager.ejb.entities.Cliente[ idCliente=" + idCliente + " ]";
+        return this.nome+" "+this.cognome;
     }
     
 }

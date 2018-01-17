@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.entities;
 
+import com.javasoft.ciclopemanager.ejb.entities.util.DeepClonable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -33,7 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Articolo.findByScortaMinima", query = "SELECT a FROM Articolo a WHERE a.scortaMinima = :scortaMinima")
     , @NamedQuery(name = "Articolo.findByUnitaDiMisura", query = "SELECT a FROM Articolo a WHERE a.unitaDiMisura = :unitaDiMisura")
     , @NamedQuery(name = "Articolo.findByApprovvigionamento", query = "SELECT a FROM Articolo a WHERE a.approvvigionamento = :approvvigionamento")})
-public class Articolo implements Serializable {
+public class Articolo implements Serializable, DeepClonable<Articolo>{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -77,7 +78,28 @@ public class Articolo implements Serializable {
         this.scortaMinima = scortaMinima;
         this.unitaDiMisura = unitaDiMisura;
     }
-
+    
+    @Override
+    public Articolo deepClone() {
+        Articolo destination = new Articolo();
+        destination.approvvigionamento = this.approvvigionamento;
+        destination.descrizione = this.descrizione;
+        destination.idArticolo = this.idArticolo;
+        destination.scortaMinima = this.scortaMinima;
+        destination.scortaRimanente = this.scortaRimanente;
+        destination.unitaDiMisura = this.unitaDiMisura;
+        return destination;
+    }
+    @Override
+    public void restoreFromClone(Articolo clone){
+        this.approvvigionamento=clone.approvvigionamento;
+        this.descrizione = clone.descrizione;
+        this.idArticolo = clone.idArticolo;
+        this.scortaMinima = clone.scortaMinima;
+        this.scortaRimanente = clone.scortaRimanente;
+        this.unitaDiMisura = clone.unitaDiMisura;
+    }
+    
     public Integer getIdArticolo() {
         return idArticolo;
     }

@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Categoriatipolavoro.findAll", query = "SELECT c FROM Categoriatipolavoro c")
     , @NamedQuery(name = "Categoriatipolavoro.findByIdCategoriaTipoLavoro", query = "SELECT c FROM Categoriatipolavoro c WHERE c.idCategoriaTipoLavoro = :idCategoriaTipoLavoro")
     , @NamedQuery(name = "Categoriatipolavoro.findByNome", query = "SELECT c FROM Categoriatipolavoro c WHERE c.nome = :nome")})
-public class Categoriatipolavoro implements Serializable {
+public class Categoriatipolavoro implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,7 +60,8 @@ public class Categoriatipolavoro implements Serializable {
         this.idCategoriaTipoLavoro = idCategoriaTipoLavoro;
         this.nome = nome;
     }
-
+    
+    
     public Integer getIdCategoriaTipoLavoro() {
         return idCategoriaTipoLavoro;
     }
@@ -108,7 +109,7 @@ public class Categoriatipolavoro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.javasoft.ciclopemanager.ejb.entities.Categoriatipolavoro[ idCategoriaTipoLavoro=" + idCategoriaTipoLavoro + " ]";
+        return this.nome;
     }
     
 }

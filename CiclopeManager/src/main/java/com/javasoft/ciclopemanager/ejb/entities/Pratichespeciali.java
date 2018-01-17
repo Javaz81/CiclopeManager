@@ -92,7 +92,7 @@ public class Pratichespeciali implements Serializable {
 
     @Override
     public String toString() {
-        return "com.javasoft.ciclopemanager.ejb.entities.Pratichespeciali[ idPraticaSpeciale=" + idPraticaSpeciale + " ]";
+        return this.descrizione;
     }
     
 }

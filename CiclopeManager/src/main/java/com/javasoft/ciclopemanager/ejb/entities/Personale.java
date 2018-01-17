@@ -124,7 +124,7 @@ public class Personale implements Serializable {
 
     @Override
     public String toString() {
-        return "com.javasoft.ciclopemanager.ejb.entities.Personale[ idPersonale=" + idPersonale + " ]";
+        return this.nome + " " + this.cognome;
     }
     
 }

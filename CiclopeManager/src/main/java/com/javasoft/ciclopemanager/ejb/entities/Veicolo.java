@@ -167,7 +167,11 @@ public class Veicolo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.javasoft.ciclopemanager.ejb.entities.Veicolo[ idVeicolo=" + idVeicolo + " ]";
+        return this.marca + " " 
+                + this.modello + " " 
+                + this.matricola + " "
+                + this.targa + " ["
+                + this.tipo + "] ";
     }
     
 }

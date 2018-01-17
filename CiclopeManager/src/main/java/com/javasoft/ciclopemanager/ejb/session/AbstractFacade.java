@@ -5,12 +5,17 @@
  */
 package com.javasoft.ciclopemanager.ejb.session;
 
+import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
 import java.util.List;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 
 /**
  *
  * @author andrea
+ * @param <T>
  */
 public abstract class AbstractFacade<T> {
 
@@ -22,16 +27,30 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    private void tryMerging(final T entity,boolean remove) throws FacadeException {
+
+        T entityMerged = getEntityManager().merge(entity);
+        if(remove){
+            getEntityManager().remove(entityMerged);
+        }
+        try {
+            getEntityManager().flush();
+        } catch (PersistenceException e) {
+            throw new FacadeException(e);
+        }
+    }
+
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) {
-        getEntityManager().merge(entity);
+    public void edit(T entity) throws FacadeException {
+        tryMerging(entity, false);
     }
 
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+    public void remove(T entity) throws FacadeException {
+        tryMerging(entity, true);
     }
 
     public T find(Object id) {
@@ -60,5 +79,5 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }
