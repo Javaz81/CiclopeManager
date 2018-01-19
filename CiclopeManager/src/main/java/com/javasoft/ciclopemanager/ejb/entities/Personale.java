@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.entities;
 
+import com.javasoft.ciclopemanager.ejb.entities.util.DeepClonable;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -28,11 +29,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Personale.findAll", query = "SELECT p FROM Personale p")
-    , @NamedQuery(name = "Personale.findByIdPersonale", query = "SELECT p FROM Personale p WHERE p.idPersonale = :idPersonale")
+    , @NamedQuery(name = "Personale.findById", query = "SELECT p FROM Personale p WHERE p.idPersonale = :id")
     , @NamedQuery(name = "Personale.findByNome", query = "SELECT p FROM Personale p WHERE p.nome = :nome")
     , @NamedQuery(name = "Personale.findByCognome", query = "SELECT p FROM Personale p WHERE p.cognome = :cognome")
     , @NamedQuery(name = "Personale.findByPosizione", query = "SELECT p FROM Personale p WHERE p.posizione = :posizione")})
-public class Personale implements Serializable {
+public class Personale implements Serializable, DeepClonable<Personale> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -126,5 +127,29 @@ public class Personale implements Serializable {
     public String toString() {
         return this.nome + " " + this.cognome;
     }
+
+    @Override
+    public Personale deepClone() {
+        Personale result = new Personale();
+        result.cognome = this.cognome;
+        result.idPersonale = this.idPersonale;
+        result.nome = this.nome;
+        result.posizione = this.posizione;
+        return result;
+    }
+
+    @Override
+    public void restoreFromClone(Personale clone) {
+        this.cognome = clone.cognome;
+        this.idPersonale = clone.idPersonale;
+        this.nome = clone.nome;
+        this.posizione = clone.posizione;        
+    }
+
+    @Override
+    public Integer getId(){
+        return this.getIdPersonale();
+    }
+ 
     
 }

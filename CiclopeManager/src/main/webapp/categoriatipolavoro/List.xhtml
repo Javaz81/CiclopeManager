@@ -42,7 +42,7 @@
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{categoriatipolavoroController.prepareCreate}" update=":CategoriatipolavoroCreateForm" oncomplete="PF('CategoriatipolavoroCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CategoriatipolavoroViewForm" oncomplete="PF('CategoriatipolavoroViewDialog').show()" disabled="#{empty categoriatipolavoroController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":CategoriatipolavoroEditForm" oncomplete="PF('CategoriatipolavoroEditDialog').show()" disabled="#{empty categoriatipolavoroController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{categoriatipolavoroController.prepareEdit}"  update=":CategoriatipolavoroEditForm" oncomplete="PF('CategoriatipolavoroEditDialog').show()" disabled="#{empty categoriatipolavoroController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{categoriatipolavoroController.destroy}" update=":growl,datalist" disabled="#{empty categoriatipolavoroController.selected}"/>
                         </f:facet>
                     </p:dataTable>

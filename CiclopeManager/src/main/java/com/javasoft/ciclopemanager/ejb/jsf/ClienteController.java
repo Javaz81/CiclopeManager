@@ -27,6 +27,7 @@ public class ClienteController implements Serializable {
     private com.javasoft.ciclopemanager.ejb.session.ClienteFacade ejbFacade;
     private List<Cliente> items = null;
     private Cliente selected;
+    private Cliente copySelected;
 
     public ClienteController() {
     }
@@ -49,6 +50,11 @@ public class ClienteController implements Serializable {
         return ejbFacade;
     }
 
+    public Cliente prepareEdit() {
+        copySelected = selected.deepClone();
+        return copySelected;
+    }
+    
     public Cliente prepareCreate() {
         selected = new Cliente();
         initializeEmbeddableKey();
@@ -81,12 +87,16 @@ public class ClienteController implements Serializable {
         return items;
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
+     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    if (persistAction == PersistAction.CREATE) {
+                        getFacade().create(selected);
+                    } else {
+                        getFacade().edit(selected, copySelected);
+                    }
                 } else {
                     getFacade().remove(selected);
                 }
@@ -102,13 +112,14 @@ public class ClienteController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
+                selected.restoreFromClone(copySelected);
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }
         }
     }
-
+     
     public Cliente getCliente(java.lang.Integer id) {
         return getFacade().find(id);
     }

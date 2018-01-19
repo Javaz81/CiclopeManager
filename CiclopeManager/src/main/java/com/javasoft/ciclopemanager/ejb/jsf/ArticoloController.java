@@ -19,6 +19,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.data.PageEvent;
 
 @Named("articoloController")
 @SessionScoped
@@ -56,8 +58,8 @@ public class ArticoloController implements Serializable {
         initializeEmbeddableKey();
         return selected;
     }
-    
-    public Articolo prepareEdit(){
+
+    public Articolo prepareEdit() {
         copySelected = selected.deepClone();
         return copySelected;
     }
@@ -93,15 +95,18 @@ public class ArticoloController implements Serializable {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    if(persistAction == PersistAction.CREATE)
+                    if (persistAction == PersistAction.CREATE) {
                         getFacade().create(selected);
-                    else
-                        getFacade().edit(selected);
+                    } else {
+                        getFacade().edit(selected, copySelected);
+                    }
                 } else {
                     getFacade().remove(selected);
                 }
+                System.err.println("FINE OK");
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException | FacadeException ex) {
+                System.err.println("FINE NON OK");
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
@@ -112,8 +117,8 @@ public class ArticoloController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
-                    selected.restoreFromClone(copySelected);
-                } catch (Exception ex) {
+                selected.restoreFromClone(copySelected);
+            } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }

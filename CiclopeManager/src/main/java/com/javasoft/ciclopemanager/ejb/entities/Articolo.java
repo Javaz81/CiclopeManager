@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Articolo.findAll", query = "SELECT a FROM Articolo a")
-    , @NamedQuery(name = "Articolo.findByIdArticolo", query = "SELECT a FROM Articolo a WHERE a.idArticolo = :idArticolo")
+    , @NamedQuery(name = "Articolo.findById", query = "SELECT a FROM Articolo a WHERE a.idArticolo = :id")
     , @NamedQuery(name = "Articolo.findByDescrizione", query = "SELECT a FROM Articolo a WHERE a.descrizione = :descrizione")
     , @NamedQuery(name = "Articolo.findByScortaRimanente", query = "SELECT a FROM Articolo a WHERE a.scortaRimanente = :scortaRimanente")
     , @NamedQuery(name = "Articolo.findByScortaMinima", query = "SELECT a FROM Articolo a WHERE a.scortaMinima = :scortaMinima")
@@ -171,6 +171,11 @@ public class Articolo implements Serializable, DeepClonable<Articolo>{
     @Override
     public String toString() {
         return "com.javasoft.ciclopemanager.ejb.entities.Articolo[ idArticolo=" + idArticolo + " ]";
+    }
+
+    @Override
+    public Object getId() {
+        return this.idArticolo;
     }
     
 }

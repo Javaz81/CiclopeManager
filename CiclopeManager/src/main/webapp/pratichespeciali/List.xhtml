@@ -42,7 +42,7 @@
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{pratichespecialiController.prepareCreate}" update=":PratichespecialiCreateForm" oncomplete="PF('PratichespecialiCreateDialog').show()"/>
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":PratichespecialiViewForm" oncomplete="PF('PratichespecialiViewDialog').show()" disabled="#{empty pratichespecialiController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":PratichespecialiEditForm" oncomplete="PF('PratichespecialiEditDialog').show()" disabled="#{empty pratichespecialiController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{pratichespecialiController.prepareEdit}" update=":PratichespecialiEditForm" oncomplete="PF('PratichespecialiEditDialog').show()" disabled="#{empty pratichespecialiController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{pratichespecialiController.destroy}" update=":growl,datalist" disabled="#{empty pratichespecialiController.selected}"/>
                         </f:facet>
                     </p:dataTable>

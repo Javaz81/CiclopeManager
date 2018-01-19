@@ -13,4 +13,5 @@ package com.javasoft.ciclopemanager.ejb.entities.util;
 public interface DeepClonable<T extends Object> {
     T deepClone();
     void restoreFromClone(T clone);
+    Object getId();
 }

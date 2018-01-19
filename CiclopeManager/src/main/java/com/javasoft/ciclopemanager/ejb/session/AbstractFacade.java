@@ -11,6 +11,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaQuery;
 
 /**
  *
@@ -29,12 +30,16 @@ public abstract class AbstractFacade<T> {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void tryMerging(final T entity,boolean remove) throws FacadeException {
-
         T entityMerged = getEntityManager().merge(entity);
+        try {
+            getEntityManager().flush();
+        } catch (PersistenceException e) {
+            throw new FacadeException(e);
+        }
         if(remove){
             getEntityManager().remove(entityMerged);
         }
-        try {
+         try {
             getEntityManager().flush();
         } catch (PersistenceException e) {
             throw new FacadeException(e);
@@ -45,7 +50,7 @@ public abstract class AbstractFacade<T> {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) throws FacadeException {
+    public void edit(T entity) throws FacadeException {        
         tryMerging(entity, false);
     }
 
@@ -58,13 +63,13 @@ public abstract class AbstractFacade<T> {
     }
 
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
 
     public List<T> findRange(int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0] + 1);
@@ -73,11 +78,13 @@ public abstract class AbstractFacade<T> {
     }
 
     public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
+    
+    public abstract boolean isIdChanged ( T entity, T other );
 
 }

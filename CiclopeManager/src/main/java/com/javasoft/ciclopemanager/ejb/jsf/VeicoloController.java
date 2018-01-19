@@ -27,6 +27,7 @@ public class VeicoloController implements Serializable {
     private com.javasoft.ciclopemanager.ejb.session.VeicoloFacade ejbFacade;
     private List<Veicolo> items = null;
     private Veicolo selected;
+    private Veicolo copySelected;
 
     public VeicoloController() {
     }
@@ -48,7 +49,10 @@ public class VeicoloController implements Serializable {
     private VeicoloFacade getFacade() {
         return ejbFacade;
     }
-
+    public Veicolo prepareEdit() {
+        copySelected = selected.deepClone();
+        return copySelected;
+    }
     public Veicolo prepareCreate() {
         selected = new Veicolo();
         initializeEmbeddableKey();
@@ -81,12 +85,16 @@ public class VeicoloController implements Serializable {
         return items;
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
+     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    if (persistAction == PersistAction.CREATE) {
+                        getFacade().create(selected);
+                    } else {
+                        getFacade().edit(selected, copySelected);
+                    }
                 } else {
                     getFacade().remove(selected);
                 }
@@ -102,6 +110,7 @@ public class VeicoloController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
+                selected.restoreFromClone(copySelected);
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));

@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.entities;
 
+import com.javasoft.ciclopemanager.ejb.entities.util.DeepClonable;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -32,12 +33,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c")
-    , @NamedQuery(name = "Cliente.findByIdCliente", query = "SELECT c FROM Cliente c WHERE c.idCliente = :idCliente")
+    , @NamedQuery(name = "Cliente.findById", query = "SELECT c FROM Cliente c WHERE c.idCliente = :id")
     , @NamedQuery(name = "Cliente.findByNome", query = "SELECT c FROM Cliente c WHERE c.nome = :nome")
     , @NamedQuery(name = "Cliente.findByCognome", query = "SELECT c FROM Cliente c WHERE c.cognome = :cognome")
     , @NamedQuery(name = "Cliente.findByCellulare", query = "SELECT c FROM Cliente c WHERE c.cellulare = :cellulare")
     , @NamedQuery(name = "Cliente.findByLocalita", query = "SELECT c FROM Cliente c WHERE c.localita = :localita")})
-public class Cliente implements Serializable {
+public class Cliente implements Serializable, DeepClonable<Cliente> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -146,6 +147,33 @@ public class Cliente implements Serializable {
     @Override
     public String toString() {
         return this.nome+" "+this.cognome;
+    }
+
+    @Override
+    public Cliente deepClone() {
+        Cliente result = new Cliente();
+        result.idCliente = this.idCliente;
+        result.cellulare = this.cellulare;
+        result.cognome = this.cognome;
+        result.localita = this.localita;
+        result.nome = this.nome;
+        result.veicoloCollection = this.veicoloCollection;
+        return result;
+    }
+
+    @Override
+    public void restoreFromClone(Cliente clone) {
+        this.cellulare = clone.cellulare;
+        this.cognome = clone.cognome;
+        this.idCliente = clone.idCliente;
+        this.localita = clone.localita;
+        this.nome = clone.nome;
+        this.veicoloCollection = clone.veicoloCollection;
+    }
+
+    @Override
+    public Object getId() {
+        return this.idCliente;
     }
     
 }

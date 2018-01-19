@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.entities;
 
+import com.javasoft.ciclopemanager.ejb.entities.util.DeepClonable;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,14 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Veicolo.findAll", query = "SELECT v FROM Veicolo v")
-    , @NamedQuery(name = "Veicolo.findByIdVeicolo", query = "SELECT v FROM Veicolo v WHERE v.idVeicolo = :idVeicolo")
+    , @NamedQuery(name = "Veicolo.findById", query = "SELECT v FROM Veicolo v WHERE v.idVeicolo = :id")
     , @NamedQuery(name = "Veicolo.findByMarca", query = "SELECT v FROM Veicolo v WHERE v.marca = :marca")
     , @NamedQuery(name = "Veicolo.findByModello", query = "SELECT v FROM Veicolo v WHERE v.modello = :modello")
     , @NamedQuery(name = "Veicolo.findByTarga", query = "SELECT v FROM Veicolo v WHERE v.targa = :targa")
     , @NamedQuery(name = "Veicolo.findByAnno", query = "SELECT v FROM Veicolo v WHERE v.anno = :anno")
     , @NamedQuery(name = "Veicolo.findByTipo", query = "SELECT v FROM Veicolo v WHERE v.tipo = :tipo")
     , @NamedQuery(name = "Veicolo.findByMatricola", query = "SELECT v FROM Veicolo v WHERE v.matricola = :matricola")})
-public class Veicolo implements Serializable {
+public class Veicolo implements Serializable, DeepClonable<Veicolo> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -172,6 +173,37 @@ public class Veicolo implements Serializable {
                 + this.matricola + " "
                 + this.targa + " ["
                 + this.tipo + "] ";
+    }
+
+    @Override
+    public Veicolo deepClone() {
+       Veicolo result = new Veicolo();
+       result.anno = this.anno;
+       result.cliente = this.cliente;
+       result.idVeicolo = this.idVeicolo;
+       result.marca = this.marca;
+       result.matricola =this.matricola;
+       result.modello = this.modello;
+       result.targa = this.targa;
+       result.tipo = this.tipo;
+       return result;
+    }
+
+    @Override
+    public void restoreFromClone(Veicolo clone) {
+        this.anno=clone.anno;
+        this.cliente = clone.cliente;
+        this.idVeicolo = clone.idVeicolo;
+        this.marca = clone.marca;
+        this.matricola = clone.matricola;
+        this.modello = clone.modello;
+        this.targa = clone.targa;
+        this.tipo = clone.tipo;
+    }
+
+    @Override
+    public Object getId() {
+        return this.idVeicolo;
     }
     
 }

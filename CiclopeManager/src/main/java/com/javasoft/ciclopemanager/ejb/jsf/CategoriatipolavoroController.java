@@ -27,6 +27,7 @@ public class CategoriatipolavoroController implements Serializable {
     private com.javasoft.ciclopemanager.ejb.session.CategoriatipolavoroFacade ejbFacade;
     private List<Categoriatipolavoro> items = null;
     private Categoriatipolavoro selected;
+    private Categoriatipolavoro copySelected;
 
     public CategoriatipolavoroController() {
     }
@@ -47,6 +48,11 @@ public class CategoriatipolavoroController implements Serializable {
 
     private CategoriatipolavoroFacade getFacade() {
         return ejbFacade;
+    }
+
+    public Categoriatipolavoro prepareEdit() {
+        copySelected = selected.deepClone();
+        return copySelected;
     }
 
     public Categoriatipolavoro prepareCreate() {
@@ -86,7 +92,11 @@ public class CategoriatipolavoroController implements Serializable {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    if (persistAction == PersistAction.CREATE) {
+                        getFacade().create(selected);
+                    } else {
+                        getFacade().edit(selected, copySelected);
+                    }
                 } else {
                     getFacade().remove(selected);
                 }
@@ -102,6 +112,7 @@ public class CategoriatipolavoroController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
+                selected.restoreFromClone(copySelected);
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));

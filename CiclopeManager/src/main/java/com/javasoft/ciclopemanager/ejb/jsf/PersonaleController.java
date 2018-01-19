@@ -27,6 +27,7 @@ public class PersonaleController implements Serializable {
     private com.javasoft.ciclopemanager.ejb.session.PersonaleFacade ejbFacade;
     private List<Personale> items = null;
     private Personale selected;
+    private Personale copySelected;
 
     public PersonaleController() {
     }
@@ -49,6 +50,11 @@ public class PersonaleController implements Serializable {
         return ejbFacade;
     }
 
+    public Personale prepareEdit() {
+        copySelected = selected.deepClone();
+        return copySelected;
+    }
+    
     public Personale prepareCreate() {
         selected = new Personale();
         initializeEmbeddableKey();
@@ -81,12 +87,16 @@ public class PersonaleController implements Serializable {
         return items;
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
+     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    if (persistAction == PersistAction.CREATE) {
+                        getFacade().create(selected);
+                    } else {
+                        getFacade().edit(selected, copySelected);
+                    }
                 } else {
                     getFacade().remove(selected);
                 }
@@ -102,6 +112,7 @@ public class PersonaleController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
+                selected.restoreFromClone(copySelected);
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));

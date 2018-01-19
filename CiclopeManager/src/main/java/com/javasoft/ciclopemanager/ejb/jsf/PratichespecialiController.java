@@ -27,6 +27,7 @@ public class PratichespecialiController implements Serializable {
     private com.javasoft.ciclopemanager.ejb.session.PratichespecialiFacade ejbFacade;
     private List<Pratichespeciali> items = null;
     private Pratichespeciali selected;
+    private Pratichespeciali copySelected;
 
     public PratichespecialiController() {
     }
@@ -49,6 +50,11 @@ public class PratichespecialiController implements Serializable {
         return ejbFacade;
     }
 
+    public Pratichespeciali prepareEdit() {
+        copySelected = selected.deepClone();
+        return copySelected;
+    }
+    
     public Pratichespeciali prepareCreate() {
         selected = new Pratichespeciali();
         initializeEmbeddableKey();
@@ -81,12 +87,16 @@ public class PratichespecialiController implements Serializable {
         return items;
     }
 
-    private void persist(PersistAction persistAction, String successMessage) {
+     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    if (persistAction == PersistAction.CREATE) {
+                        getFacade().create(selected);
+                    } else {
+                        getFacade().edit(selected, copySelected);
+                    }
                 } else {
                     getFacade().remove(selected);
                 }
@@ -102,6 +112,7 @@ public class PratichespecialiController implements Serializable {
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
+                selected.restoreFromClone(copySelected);
             } catch (Exception ex) {
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));

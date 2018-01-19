@@ -6,6 +6,9 @@
 package com.javasoft.ciclopemanager.ejb.session;
 
 import com.javasoft.ciclopemanager.ejb.entities.Veicolo;
+import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
+import java.util.List;
+import java.util.ResourceBundle;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +30,30 @@ public class VeicoloFacade extends AbstractFacade<Veicolo> {
 
     public VeicoloFacade() {
         super(Veicolo.class);
+    }
+
+    @Override
+    public boolean isIdChanged(Veicolo entity, Veicolo other) {
+        return !(entity.getId().equals(other.getId()));
+    }
+    
+     //This "edit" method prevent ID entity overwriting the other one.
+    public void edit(Veicolo entity, Veicolo beforeEdit) throws FacadeException {
+        //check if id is changed
+        if (this.isIdChanged(entity, beforeEdit)) {
+            List result
+                    = em.createNamedQuery("Veicolo.findById")
+                            .setParameter("id", entity.getIdVeicolo())
+                            .getResultList();
+            //if an item with the id is present yet, then fails... 
+            if (!result.isEmpty()) {
+                throw new FacadeException(ResourceBundle.getBundle("/Bundle")
+                        .getString("IdNotUpdatable"));
+            }
+        } else {
+            //otherwise try merging changed entity.
+            super.edit(entity);
+        }
     }
     
 }

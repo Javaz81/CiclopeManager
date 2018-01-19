@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.entities;
 
+import com.javasoft.ciclopemanager.ejb.entities.util.DeepClonable;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -31,10 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tipolavoro.findAll", query = "SELECT t FROM Tipolavoro t")
-    , @NamedQuery(name = "Tipolavoro.findByIdTipoLavoro", query = "SELECT t FROM Tipolavoro t WHERE t.idTipoLavoro = :idTipoLavoro")
+    , @NamedQuery(name = "Tipolavoro.findById", query = "SELECT t FROM Tipolavoro t WHERE t.idTipoLavoro = :id")
     , @NamedQuery(name = "Tipolavoro.findByCodice", query = "SELECT t FROM Tipolavoro t WHERE t.codice = :codice")
     , @NamedQuery(name = "Tipolavoro.findByDescrizione", query = "SELECT t FROM Tipolavoro t WHERE t.descrizione = :descrizione")})
-public class Tipolavoro implements Serializable {
+public class Tipolavoro implements Serializable, DeepClonable<Tipolavoro> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -121,6 +122,29 @@ public class Tipolavoro implements Serializable {
     @Override
     public String toString() {
         return "com.javasoft.ciclopemanager.ejb.entities.Tipolavoro[ idTipoLavoro=" + idTipoLavoro + " ]";
+    }
+
+    @Override
+    public Tipolavoro deepClone() {
+        Tipolavoro result = new Tipolavoro();
+        result.categoria = this.categoria;
+        result.codice = this.codice;
+        result.descrizione = this.descrizione;
+        result.idTipoLavoro = this.idTipoLavoro;
+        return result;
+    }
+
+    @Override
+    public void restoreFromClone(Tipolavoro clone) {
+        this.categoria = clone.categoria;
+        this.codice = clone.codice;
+        this.descrizione = clone.descrizione;
+        this.idTipoLavoro = clone.idTipoLavoro;
+    }
+
+    @Override
+    public Object getId() {
+        return this.idTipoLavoro;       
     }
     
 }

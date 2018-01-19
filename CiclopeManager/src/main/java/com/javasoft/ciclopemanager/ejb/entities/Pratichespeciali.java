@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.entities;
 
+import com.javasoft.ciclopemanager.ejb.entities.util.DeepClonable;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -26,9 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pratichespeciali.findAll", query = "SELECT p FROM Pratichespeciali p")
-    , @NamedQuery(name = "Pratichespeciali.findByIdPraticaSpeciale", query = "SELECT p FROM Pratichespeciali p WHERE p.idPraticaSpeciale = :idPraticaSpeciale")
+    , @NamedQuery(name = "Pratichespeciali.findById", query = "SELECT p FROM Pratichespeciali p WHERE p.idPraticaSpeciale = :id")
     , @NamedQuery(name = "Pratichespeciali.findByDescrizione", query = "SELECT p FROM Pratichespeciali p WHERE p.descrizione = :descrizione")})
-public class Pratichespeciali implements Serializable {
+public class Pratichespeciali implements Serializable, DeepClonable<Pratichespeciali> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,6 +94,25 @@ public class Pratichespeciali implements Serializable {
     @Override
     public String toString() {
         return this.descrizione;
+    }
+
+    @Override
+    public Pratichespeciali deepClone() {
+        Pratichespeciali result = new Pratichespeciali();
+        result.descrizione = this.descrizione;
+        result.idPraticaSpeciale = this.idPraticaSpeciale;
+        return result;
+    }
+
+    @Override
+    public void restoreFromClone(Pratichespeciali clone) {
+        this.descrizione = clone.descrizione;
+        this.idPraticaSpeciale = clone.idPraticaSpeciale;
+    }
+
+    @Override
+    public Object getId() {
+        return this.idPraticaSpeciale;
     }
     
 }

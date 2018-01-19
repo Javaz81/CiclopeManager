@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.entities;
 
+import com.javasoft.ciclopemanager.ejb.entities.util.DeepClonable;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -31,9 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categoriatipolavoro.findAll", query = "SELECT c FROM Categoriatipolavoro c")
-    , @NamedQuery(name = "Categoriatipolavoro.findByIdCategoriaTipoLavoro", query = "SELECT c FROM Categoriatipolavoro c WHERE c.idCategoriaTipoLavoro = :idCategoriaTipoLavoro")
+    , @NamedQuery(name = "Categoriatipolavoro.findById", query = "SELECT c FROM Categoriatipolavoro c WHERE c.idCategoriaTipoLavoro = :id")
     , @NamedQuery(name = "Categoriatipolavoro.findByNome", query = "SELECT c FROM Categoriatipolavoro c WHERE c.nome = :nome")})
-public class Categoriatipolavoro implements Serializable{
+public class Categoriatipolavoro implements Serializable,
+        DeepClonable<Categoriatipolavoro>{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -110,6 +112,27 @@ public class Categoriatipolavoro implements Serializable{
     @Override
     public String toString() {
         return this.nome;
+    }
+
+    @Override
+    public Categoriatipolavoro deepClone() {
+        Categoriatipolavoro result = new Categoriatipolavoro();
+        result.idCategoriaTipoLavoro = this.idCategoriaTipoLavoro;
+        result.nome = this.nome;
+        result.tipolavoroCollection = this.tipolavoroCollection;
+        return result;
+    }
+
+    @Override
+    public void restoreFromClone(Categoriatipolavoro clone) {
+        this.idCategoriaTipoLavoro = clone.idCategoriaTipoLavoro;
+        this.nome = clone.nome;
+        this.tipolavoroCollection = clone.tipolavoroCollection;
+    }
+
+    @Override
+    public Object getId() {
+        return this.idCategoriaTipoLavoro;
     }
     
 }
