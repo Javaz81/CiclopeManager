@@ -19,6 +19,7 @@
                     <p:dataTable id="datalist" value="#{categoriatipolavoroController.items}" var="item"
                                  selectionMode="single" selection="#{categoriatipolavoroController.selected}"
                                  widgetVar="itemsTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  emptyMessage="#{bundle.ListCategoriatipolavoroEmpty}" 
                                  filteredValue="#{categoriatipolavoroController.filteredItems}"
                                  paginator="true"
@@ -32,7 +33,8 @@
                         <f:facet name="header">
                             <p:outputPanel>
                                 <h:outputText value="Cerca su tutto:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" placeholder="Cerca..."/>
+                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="margin-left: 1em; width:150px" placeholder="Cerca..."/>
+                                <!--<h:outputText value="(TOTALI = #{articoloController.items.size()} - FILTRATI = #{articoloController.filteredItems.size()})" style="margin-left: 2em" />-->
                             </p:outputPanel>
                         </f:facet>
                         <p:column sortBy="#{item.idCategoriaTipoLavoro}" filterBy="#{item.idCategoriaTipoLavoro}" filterMatchMode="contains">
@@ -52,6 +54,12 @@
                             <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":CategoriatipolavoroViewForm" oncomplete="PF('CategoriatipolavoroViewDialog').show()" disabled="#{empty categoriatipolavoroController.selected}"/>
                             <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{categoriatipolavoroController.prepareEdit}"  update=":CategoriatipolavoroEditForm" oncomplete="PF('CategoriatipolavoroEditDialog').show()" disabled="#{empty categoriatipolavoroController.selected}"/>
                             <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{categoriatipolavoroController.destroy}" update=":growl,datalist" disabled="#{empty categoriatipolavoroController.selected}"/>
+                            <p:commandButton style="margin-left: 3em" value="SALVA IN Excel" ajax="false">
+                                <p:dataExporter type="xls" target="datalist" fileName="CategorieLavori"/>
+                            </p:commandButton>
+                            <p:commandButton value="SALVA IN PDF" ajax="false">
+                                <p:dataExporter type="pdf" target="datalist" fileName="CategorieLavori"/>
+                            </p:commandButton>
                         </f:facet>
                     </p:dataTable>
                 </p:panel>

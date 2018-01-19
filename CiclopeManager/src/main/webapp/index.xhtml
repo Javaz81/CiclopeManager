@@ -1,36 +1,35 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-        <h:outputStylesheet name="css/jsfcrud.css"/>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-        <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-        <br />
-        <h:link outcome="/articolo/List" value="Show All Articolo Items"/>
-        <br />
-        <h:link outcome="/categoriatipolavoro/List" value="Show All Categoriatipolavoro Items"/>
-        <br />
-        <h:link outcome="/cliente/List" value="Show All Cliente Items"/>
-        <br />
-        <h:link outcome="/personale/List" value="Show All Personale Items"/>
-        <br />
-        <h:link outcome="/pratichespeciali/List" value="Show All Pratichespeciali Items"/>
-        <br />
-        <h:link outcome="/tipolavoro/List" value="Show All Tipolavoro Items"/>
-        <br />
-        <h:link outcome="/veicolo/List" value="Show All Veicolo Items"/>
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
+    <ui:composition template="/template.xhtml">
 
+        <ui:define name="title">
+            <h:outputText value="#{bundle.HomeTitle}"></h:outputText>
+        </ui:define>
 
-
-
-
+        <ui:define name="body">
+            <p:panel header="#{bundle.HomeListTitle}">
+                <h:link outcome="/articolo/List" value="Articoli di Magazzino (Giacenze)"/>
+                <br />
+                <h:link outcome="/cliente/List" value="Registro dei clienti"/>
+                <br />
+                <h:link outcome="/personale/List" value="Registro del personale interno"/>
+                <br />
+                <h:link outcome="/pratichespeciali/List" value="Registro pratiche speciali(sperimentale/non attivo)"/>
+                <br />
+                <h:link outcome="/categoriatipolavoro/List" value="Registro categorie dei lavori"/>
+                <br />
+                <h:link outcome="/tipolavoro/List" value="Registro dei lavori e delle manutenzioni"/>
+                <br />
+                <h:link outcome="/veicolo/List" value="Registro dei Veicoli e Piattaforme"/>
+            </p:panel>
+        </ui:define>
+    </ui:composition>
 
 </html>
 

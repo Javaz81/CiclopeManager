@@ -16,18 +16,19 @@
         <p:growl id="growl" life="3000" />
 
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" size="65" header="#{bundle.AppName}">
+            <p:layoutUnit rendered="#{(request.requestURI ne '/CiclopeManager/') and (request.requestURI ne '/CiclopeManager/faces/index.xhtml')}" 
+                          position="north" size="65" header="#{bundle.AppName}">
                 <h:form id="menuForm">
                     <p:menubar>
                         <p:menuitem value="#{bundle.Home}" outcome="/index" icon="ui-icon-home"/>
-                        <p:submenu label="#{bundle.Maintenance}">
-                            <p:menuitem value="Articolo" outcome="/articolo/List.xhtml" />
-                            <p:menuitem value="Categoriatipolavoro" outcome="/categoriatipolavoro/List.xhtml" />
-                            <p:menuitem value="Cliente" outcome="/cliente/List.xhtml" />
+                        <p:submenu  label="#{bundle.Maintenance}">
+                            <p:menuitem value="Articoli" outcome="/articolo/List.xhtml" />                            
+                            <p:menuitem value="Clienti registrati" outcome="/cliente/List.xhtml" />
                             <p:menuitem value="Personale" outcome="/personale/List.xhtml" />
-                            <p:menuitem value="Pratichespeciali" outcome="/pratichespeciali/List.xhtml" />
-                            <p:menuitem value="Tipolavoro" outcome="/tipolavoro/List.xhtml" />
-                            <p:menuitem value="Veicolo" outcome="/veicolo/List.xhtml" />
+                            <p:menuitem value="Pratiche Speciali" outcome="/pratichespeciali/List.xhtml" />
+                            <p:menuitem value="Categorie lavori" outcome="/categoriatipolavoro/List.xhtml" />
+                            <p:menuitem value="Registro Lavori" outcome="/tipolavoro/List.xhtml" />
+                            <p:menuitem value="Registro Veicoli/Piattaforme" outcome="/veicolo/List.xhtml" />
                         </p:submenu>
                     </p:menubar>
                 </h:form>

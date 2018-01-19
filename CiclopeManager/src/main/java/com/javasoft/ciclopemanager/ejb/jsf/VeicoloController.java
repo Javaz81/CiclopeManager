@@ -135,7 +135,7 @@ public class VeicoloController implements Serializable {
         }
     }
 
-     public boolean filterByCategoria(Object value, Object filter, Locale locale) {
+    public boolean filterByCliente(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim();
         if(filterText == null||filterText.equals("")) {
             return true;

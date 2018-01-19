@@ -136,17 +136,7 @@ public class TipolavoroController implements Serializable {
             }
         }
     }
-     public boolean filterByCategoria(Object value, Object filter, Locale locale) {
-        String filterText = (filter == null) ? null : filter.toString().trim();
-        if(filterText == null||filterText.equals("")) {
-            return true;
-        }
-         
-        if(value == null) {
-            return false;
-        }
-        return value.toString().contains(filterText);        
-    }
+    
     public Tipolavoro getTipolavoro(java.lang.Integer id) {
         return getFacade().find(id);
     }
