@@ -19,8 +19,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.data.PageEvent;
 
 @Named("articoloController")
 @SessionScoped
@@ -28,9 +26,11 @@ public class ArticoloController implements Serializable {
 
     @EJB
     private com.javasoft.ciclopemanager.ejb.session.ArticoloFacade ejbFacade;
+
     private List<Articolo> items = null;
     private Articolo selected;
     private Articolo copySelected;
+    private List<Articolo> filteredItems;
 
     public ArticoloController() {
     }
@@ -41,6 +41,14 @@ public class ArticoloController implements Serializable {
 
     public void setSelected(Articolo selected) {
         this.selected = selected;
+    }
+
+    public List<Articolo> getFilteredItems() {
+        return filteredItems;
+    }
+
+    public void setFilteredItems(List<Articolo> filteredItems) {
+        this.filteredItems = filteredItems;
     }
 
     protected void setEmbeddableKeys() {
@@ -97,13 +105,16 @@ public class ArticoloController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     if (persistAction == PersistAction.CREATE) {
                         getFacade().create(selected);
-                    } else {
-                        getFacade().edit(selected, copySelected);
+                    } else { //...UPDATE
+                        getFacade().edit(selected, copySelected);                       
+                        if (!JsfUtil.isValidationFailed()) {
+                            selected = null; // Remove selection
+                            items = null;    // Invalidate list of items to trigger re-query.
+                        }
                     }
                 } else {
                     getFacade().remove(selected);
                 }
-                System.err.println("FINE OK");
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException | FacadeException ex) {
                 System.err.println("FINE NON OK");
@@ -111,6 +122,8 @@ public class ArticoloController implements Serializable {
                 Throwable cause = ex.getCause();
                 if (cause != null) {
                     msg = cause.getLocalizedMessage();
+                     if(msg.contains("Cannot delete or update a parent row"))
+                        msg=ResourceBundle.getBundle("/Bundle").getString("MySQLException_1451");
                 }
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);

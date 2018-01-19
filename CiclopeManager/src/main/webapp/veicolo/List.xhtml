@@ -18,6 +18,9 @@
                 <p:panel header="#{bundle.ListVeicoloTitle}">
                     <p:dataTable id="datalist" value="#{veicoloController.items}" var="item"
                                  selectionMode="single" selection="#{veicoloController.selected}"
+                                 widgetVar="itemsTable"
+                                 emptyMessage="#{bundle.ListVeicoloEmpty}" 
+                                 filteredValue="#{veicoloController.filteredItems}"
                                  paginator="true"
                                  rowKey="#{item.idVeicolo}"
                                  rows="10"
@@ -26,54 +29,59 @@
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
-                        <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Cerca su tutto:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" placeholder="Cerca..."/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.idVeicolo}" filterBy="#{item.idVeicolo}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListVeicoloTitle_idVeicolo}"/>
                             </f:facet>
                             <h:outputText value="#{item.idVeicolo}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.marca}" filterBy="#{item.marca}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListVeicoloTitle_marca}"/>
                             </f:facet>
                             <h:outputText value="#{item.marca}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.modello}" filterBy="#{item.modello}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListVeicoloTitle_modello}"/>
                             </f:facet>
                             <h:outputText value="#{item.modello}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.targa}" filterBy="#{item.targa}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListVeicoloTitle_targa}"/>
                             </f:facet>
                             <h:outputText value="#{item.targa}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.anno}" filterBy="#{item.anno}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListVeicoloTitle_anno}"/>
                             </f:facet>
                             <h:outputText value="#{item.anno}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.tipo}" filterBy="#{item.tipo}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListVeicoloTitle_tipo}"/>
                             </f:facet>
                             <h:outputText value="#{item.tipo}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.tipo}" filterBy="#{item.tipo}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListVeicoloTitle_matricola}"/>
                             </f:facet>
                             <h:outputText value="#{item.matricola}"/>
                         </p:column>
-                        <p:column>
-                            <f:facet name="header">
+                        <p:column sortBy="#{item.cliente.nome}" filterBy="#{item.cliente.nome}" filterFunction="#{veicoloController.filterByCliente}" >
+                            <f:facet name="header" >
                                 <h:outputText value="#{bundle.ListVeicoloTitle_cliente}"/>
                             </f:facet>
-                            <h:outputText value="#{item.cliente}"/>
+                            <h:outputText value="#{item.cliente.nome}"/>
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{veicoloController.prepareCreate}" update=":VeicoloCreateForm" oncomplete="PF('VeicoloCreateDialog').show()"/>

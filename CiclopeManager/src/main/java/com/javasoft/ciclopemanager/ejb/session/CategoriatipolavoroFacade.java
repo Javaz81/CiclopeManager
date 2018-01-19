@@ -5,6 +5,7 @@
  */
 package com.javasoft.ciclopemanager.ejb.session;
 
+import com.javasoft.ciclopemanager.ejb.entities.Articolo;
 import com.javasoft.ciclopemanager.ejb.entities.Categoriatipolavoro;
 import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
 import java.util.List;
@@ -48,6 +49,14 @@ public class CategoriatipolavoroFacade extends AbstractFacade<Categoriatipolavor
             if (!result.isEmpty()) {
                 throw new FacadeException(ResourceBundle.getBundle("/Bundle")
                         .getString("IdNotUpdatable"));
+            }else{
+                //Remove item and recreate it with new id
+                Object newId = entity.getId();
+                entity.setId(beforeEdit.getId());
+                super.remove(entity);
+                Categoriatipolavoro newItem = entity.deepClone();
+                newItem.setId(newId);
+                super.create(newItem);
             }
         } else {
             //otherwise try merging changed entity.

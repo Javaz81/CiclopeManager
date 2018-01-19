@@ -4,6 +4,7 @@ import com.javasoft.ciclopemanager.ejb.entities.Personale;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil.PersistAction;
 import com.javasoft.ciclopemanager.ejb.session.PersonaleFacade;
+import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +29,7 @@ public class PersonaleController implements Serializable {
     private List<Personale> items = null;
     private Personale selected;
     private Personale copySelected;
+    private List<Personale> filteredItems;
 
     public PersonaleController() {
     }
@@ -46,6 +48,14 @@ public class PersonaleController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
+     public List<Personale> getFilteredItems() {
+        return filteredItems;
+    }
+
+    public void setFilteredItems(List<Personale> filteredItems) {
+        this.filteredItems = filteredItems;
+    }
+    
     private PersonaleFacade getFacade() {
         return ejbFacade;
     }
@@ -94,20 +104,26 @@ public class PersonaleController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     if (persistAction == PersistAction.CREATE) {
                         getFacade().create(selected);
-                    } else {
-                        getFacade().edit(selected, copySelected);
+                    } else { //...UPDATE
+                        getFacade().edit(selected, copySelected);                       
+                        if (!JsfUtil.isValidationFailed()) {
+                            selected = null; // Remove selection
+                            items = null;    // Invalidate list of items to trigger re-query.
+                        }
                     }
                 } else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (EJBException | FacadeException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
-                if (cause != null) {
-                    msg = cause.getLocalizedMessage();
+                if (cause != null) {                    
+                    msg = cause.getLocalizedMessage();                    
                 }
                 if (msg.length() > 0) {
+                    if(msg.contains("Cannot delete or update a parent row"))
+                        msg=ResourceBundle.getBundle("/Bundle").getString("MySQLException_1451");
                     JsfUtil.addErrorMessage(msg);
                 } else {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));

@@ -4,9 +4,11 @@ import com.javasoft.ciclopemanager.ejb.entities.Veicolo;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil.PersistAction;
 import com.javasoft.ciclopemanager.ejb.session.VeicoloFacade;
+import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +30,7 @@ public class VeicoloController implements Serializable {
     private List<Veicolo> items = null;
     private Veicolo selected;
     private Veicolo copySelected;
+    private List<Veicolo> filteredItems;
 
     public VeicoloController() {
     }
@@ -46,6 +49,14 @@ public class VeicoloController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
+     public List<Veicolo> getFilteredItems() {
+        return filteredItems;
+    }
+
+    public void setFilteredItems(List<Veicolo> filteredItems) {
+        this.filteredItems = filteredItems;
+    }
+    
     private VeicoloFacade getFacade() {
         return ejbFacade;
     }
@@ -92,18 +103,24 @@ public class VeicoloController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     if (persistAction == PersistAction.CREATE) {
                         getFacade().create(selected);
-                    } else {
-                        getFacade().edit(selected, copySelected);
+                    } else { //...UPDATE
+                        getFacade().edit(selected, copySelected);                       
+                        if (!JsfUtil.isValidationFailed()) {
+                            selected = null; // Remove selection
+                            items = null;    // Invalidate list of items to trigger re-query.
+                        }
                     }
                 } else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (EJBException | FacadeException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
                     msg = cause.getLocalizedMessage();
+                     if(msg.contains("Cannot delete or update a parent row"))
+                        msg=ResourceBundle.getBundle("/Bundle").getString("MySQLException_1451");
                 }
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);
@@ -118,6 +135,18 @@ public class VeicoloController implements Serializable {
         }
     }
 
+     public boolean filterByCategoria(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim();
+        if(filterText == null||filterText.equals("")) {
+            return true;
+        }
+         
+        if(value == null) {
+            return false;
+        }
+        return value.toString().contains(filterText);        
+    }
+     
     public Veicolo getVeicolo(java.lang.Integer id) {
         return getFacade().find(id);
     }

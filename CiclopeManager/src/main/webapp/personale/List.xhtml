@@ -18,6 +18,9 @@
                 <p:panel header="#{bundle.ListPersonaleTitle}">
                     <p:dataTable id="datalist" value="#{personaleController.items}" var="item"
                                  selectionMode="single" selection="#{personaleController.selected}"
+                                 widgetVar="itemsTable"
+                                 emptyMessage="#{bundle.ListPersonaleEmpty}" 
+                                 filteredValue="#{personaleController.filteredItems}"
                                  paginator="true"
                                  rowKey="#{item.idPersonale}"
                                  rows="10"
@@ -26,26 +29,31 @@
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
-                        <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Cerca su tutto:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" placeholder="Cerca..."/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.idPersonale}" filterBy="#{item.idPersonale}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonaleTitle_idPersonale}"/>
                             </f:facet>
                             <h:outputText value="#{item.idPersonale}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.nome}" filterBy="#{item.nome}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonaleTitle_nome}"/>
                             </f:facet>
                             <h:outputText value="#{item.nome}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.cognome}" filterBy="#{item.cognome}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonaleTitle_cognome}"/>
                             </f:facet>
                             <h:outputText value="#{item.cognome}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.posizione}" filterBy="#{item.posizione}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPersonaleTitle_posizione}"/>
                             </f:facet>

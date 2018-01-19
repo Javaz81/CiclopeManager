@@ -27,7 +27,7 @@ public abstract class AbstractFacade<T> {
     }
 
     protected abstract EntityManager getEntityManager();
-
+    
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private void tryMerging(final T entity,boolean remove) throws FacadeException {
         T entityMerged = getEntityManager().merge(entity);
@@ -43,10 +43,10 @@ public abstract class AbstractFacade<T> {
             getEntityManager().flush();
         } catch (PersistenceException e) {
             throw new FacadeException(e);
-        }
+        }        
     }
-
-    public void create(T entity) {
+    
+    public void create(T entity) {        
         getEntityManager().persist(entity);
     }
 

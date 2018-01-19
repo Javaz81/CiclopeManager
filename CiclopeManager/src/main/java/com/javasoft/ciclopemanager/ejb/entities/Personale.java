@@ -150,6 +150,9 @@ public class Personale implements Serializable, DeepClonable<Personale> {
     public Integer getId(){
         return this.getIdPersonale();
     }
- 
     
+    @Override
+    public void setId(Object cloneId){
+        this.idPersonale = (Integer) cloneId;
+    }
 }

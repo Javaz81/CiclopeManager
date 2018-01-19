@@ -17,47 +17,55 @@
             <h:form id="ArticoloListForm">
                 <p:panel header="#{bundle.ListArticoloTitle}">
                     <p:dataTable id="datalist" value="#{articoloController.items}" var="item"
+                                 widgetVar="itemsTable"
+                                 emptyMessage="#{bundle.ListArticoloEmpty}" 
+                                 filteredValue="#{articoloController.filteredItems}"
                                  selectionMode="single" selection="#{articoloController.selected}"
                                  paginator="true"
                                  rowKey="#{item.idArticolo}"
                                  rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"                                 
+                                 rowsPerPageTemplate="10,20,30,40,50"
                                  >
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-                        
-                        <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Cerca su tutto:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" placeholder="Cerca..."/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.idArticolo}" filterBy="#{item.idArticolo}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListArticoloTitle_idArticolo}"/>
                             </f:facet>
                             <h:outputText value="#{item.idArticolo}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.descrizione}" filterBy="#{item.descrizione}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListArticoloTitle_descrizione}"/>
                             </f:facet>
                             <h:outputText value="#{item.descrizione}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.scortaRimanente}" filterBy="#{item.scortaRimanente}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListArticoloTitle_scortaRimanente}"/>
                             </f:facet>
                             <h:outputText value="#{item.scortaRimanente}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.scortaMinima}" filterBy="#{item.scortaMinima}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListArticoloTitle_scortaMinima}"/>
                             </f:facet>
                             <h:outputText value="#{item.scortaMinima}"/>
-                        </p:column>
-                        <p:column>
+                        </p:column >
+                        <p:column sortBy="#{item.unitaDiMisura}" filterBy="#{item.unitaDiMisura}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListArticoloTitle_unitaDiMisura}"/>
                             </f:facet>
                             <h:outputText value="#{item.unitaDiMisura}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.approvvigionamento}" filterBy="#{item.approvvigionamento}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListArticoloTitle_approvvigionamento}"/>
                             </f:facet>

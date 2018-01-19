@@ -49,6 +49,14 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
             if (!result.isEmpty()) {
                 throw new FacadeException(ResourceBundle.getBundle("/Bundle")
                         .getString("IdNotUpdatable"));
+            }else{
+                //Remove item and recreate it with new id
+                Object newId = entity.getId();
+                entity.setId(beforeEdit.getId());
+                super.remove(entity);
+                Cliente newItem = entity.deepClone();
+                newItem.setId(newId);
+                super.create(newItem);
             }
         } else {
             //otherwise try merging changed entity.

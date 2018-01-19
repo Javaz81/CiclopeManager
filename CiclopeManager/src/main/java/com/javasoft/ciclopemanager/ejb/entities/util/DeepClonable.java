@@ -14,4 +14,5 @@ public interface DeepClonable<T extends Object> {
     T deepClone();
     void restoreFromClone(T clone);
     Object getId();
+    void setId(Object cloneId);
 }

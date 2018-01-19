@@ -178,4 +178,9 @@ public class Articolo implements Serializable, DeepClonable<Articolo>{
         return this.idArticolo;
     }
     
+    @Override
+    public void setId(Object cloneId){
+        this.idArticolo = (Integer) cloneId;
+    }
+    
 }

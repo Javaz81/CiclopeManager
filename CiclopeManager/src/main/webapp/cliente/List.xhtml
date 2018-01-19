@@ -18,6 +18,9 @@
                 <p:panel header="#{bundle.ListClienteTitle}">
                     <p:dataTable id="datalist" value="#{clienteController.items}" var="item"
                                  selectionMode="single" selection="#{clienteController.selected}"
+                                 widgetVar="itemsTable"
+                                 emptyMessage="#{bundle.ListClienteEmpty}" 
+                                 filteredValue="#{clienteController.filteredItems}"
                                  paginator="true"
                                  rowKey="#{item.idCliente}"
                                  rows="10"
@@ -26,32 +29,37 @@
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
-                        <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Cerca su tutto:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" placeholder="Cerca..."/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.idCliente}" filterBy="#{item.idCliente}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListClienteTitle_idCliente}"/>
                             </f:facet>
                             <h:outputText value="#{item.idCliente}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.nome}" filterBy="#{item.nome}" filterMatchMode="contains">
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListClienteTitle_nome}"/>
+                                <h:outputText value="#{bundle.ListClienteTitle_nome} o Rag. Sociale"/>
                             </f:facet>
                             <h:outputText value="#{item.nome}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.cognome}" filterBy="#{item.cognome}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListClienteTitle_cognome}"/>
                             </f:facet>
                             <h:outputText value="#{item.cognome}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.cellulare}" filterBy="#{item.cellulare}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListClienteTitle_cellulare}"/>
                             </f:facet>
                             <h:outputText value="#{item.cellulare}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.localita}" filterBy="#{item.localita}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListClienteTitle_localita}"/>
                             </f:facet>

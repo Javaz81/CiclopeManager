@@ -36,7 +36,7 @@ public class FacadeException extends Exception {
     }
 
     public FacadeException(Throwable cause) {
-        super(cause);
+        super(cause);      
     }
     
     

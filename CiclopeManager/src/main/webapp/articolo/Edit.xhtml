@@ -15,13 +15,16 @@
                         <p:outputLabel value="#{bundle.EditArticoloLabel_idArticolo}" for="idArticolo" />
                         <p:inputText id="idArticolo" value="#{articoloController.selected.idArticolo}" title="#{bundle.EditArticoloTitle_idArticolo}" required="true" requiredMessage="#{bundle.EditArticoloRequiredMessage_idArticolo}"/>
                         <p:outputLabel value="#{bundle.EditArticoloLabel_descrizione}" for="descrizione" />
-                        <p:inputText id="descrizione" value="#{articoloController.selected.descrizione}" title="#{bundle.EditArticoloTitle_descrizione}" required="true" requiredMessage="#{bundle.EditArticoloRequiredMessage_descrizione}"/>
+                        <p:inputText size="40" id="descrizione" value="#{articoloController.selected.descrizione}" title="#{bundle.EditArticoloTitle_descrizione}" required="true" requiredMessage="#{bundle.EditArticoloRequiredMessage_descrizione}"/>
                         <p:outputLabel value="#{bundle.EditArticoloLabel_scortaRimanente}" for="scortaRimanente" />
                         <p:inputText id="scortaRimanente" value="#{articoloController.selected.scortaRimanente}" title="#{bundle.EditArticoloTitle_scortaRimanente}" required="true" requiredMessage="#{bundle.EditArticoloRequiredMessage_scortaRimanente}"/>
                         <p:outputLabel value="#{bundle.EditArticoloLabel_scortaMinima}" for="scortaMinima" />
                         <p:inputText id="scortaMinima" value="#{articoloController.selected.scortaMinima}" title="#{bundle.EditArticoloTitle_scortaMinima}" required="true" requiredMessage="#{bundle.EditArticoloRequiredMessage_scortaMinima}"/>
                         <p:outputLabel value="#{bundle.EditArticoloLabel_unitaDiMisura}" for="unitaDiMisura" />
-                        <p:inputText id="unitaDiMisura" value="#{articoloController.selected.unitaDiMisura}" title="#{bundle.EditArticoloTitle_unitaDiMisura}" required="true" requiredMessage="#{bundle.EditArticoloRequiredMessage_unitaDiMisura}"/>
+                        <p:selectOneMenu id="unitaDiMisura" value="#{articoloController.selected.unitaDiMisura}" required="true" requiredMessage="#{bundle.EditArticoloRequiredMessage_unitaDiMisura}">
+                            <f:selectItem itemLabel="pz(pezzi)" itemValue="pz" />
+                            <f:selectItem itemLabel="mt(metri)" itemValue="mt" />
+                        </p:selectOneMenu>
                         <p:outputLabel value="#{bundle.EditArticoloLabel_approvvigionamento}" for="approvvigionamento" />
                         <p:inputText id="approvvigionamento" value="#{articoloController.selected.approvvigionamento}" title="#{bundle.EditArticoloTitle_approvvigionamento}" />
                     </p:panelGrid>

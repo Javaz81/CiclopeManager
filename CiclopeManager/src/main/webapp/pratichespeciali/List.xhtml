@@ -18,6 +18,9 @@
                 <p:panel header="#{bundle.ListPratichespecialiTitle}">
                     <p:dataTable id="datalist" value="#{pratichespecialiController.items}" var="item"
                                  selectionMode="single" selection="#{pratichespecialiController.selected}"
+                                 widgetVar="itemsTable"
+                                 emptyMessage="#{bundle.ListPratichespecialiEmpty}" 
+                                 filteredValue="#{pratichespecialiController.filteredItems}"
                                  paginator="true"
                                  rowKey="#{item.idPraticaSpeciale}"
                                  rows="10"
@@ -26,14 +29,19 @@
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
-                        <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Cerca su tutto:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" placeholder="Cerca..."/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.idPraticaSpeciale}" filterBy="#{item.idPraticaSpeciale}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPratichespecialiTitle_idPraticaSpeciale}"/>
                             </f:facet>
                             <h:outputText value="#{item.idPraticaSpeciale}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.descrizione}" filterBy="#{item.descrizione}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListPratichespecialiTitle_descrizione}"/>
                             </f:facet>

@@ -121,7 +121,7 @@ public class Tipolavoro implements Serializable, DeepClonable<Tipolavoro> {
 
     @Override
     public String toString() {
-        return "com.javasoft.ciclopemanager.ejb.entities.Tipolavoro[ idTipoLavoro=" + idTipoLavoro + " ]";
+        return this.descrizione;
     }
 
     @Override
@@ -145,6 +145,11 @@ public class Tipolavoro implements Serializable, DeepClonable<Tipolavoro> {
     @Override
     public Object getId() {
         return this.idTipoLavoro;       
+    }
+    
+     @Override
+    public void setId(Object cloneId){
+        this.idTipoLavoro = (Integer) cloneId;
     }
     
 }

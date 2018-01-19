@@ -28,6 +28,7 @@ public class PratichespecialiController implements Serializable {
     private List<Pratichespeciali> items = null;
     private Pratichespeciali selected;
     private Pratichespeciali copySelected;
+    private List<Pratichespeciali> filteredItems;
 
     public PratichespecialiController() {
     }
@@ -46,6 +47,14 @@ public class PratichespecialiController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
+     public List<Pratichespeciali> getFilteredItems() {
+        return filteredItems;
+    }
+
+    public void setFilteredItems(List<Pratichespeciali> filteredItems) {
+        this.filteredItems = filteredItems;
+    }
+    
     private PratichespecialiFacade getFacade() {
         return ejbFacade;
     }
@@ -94,8 +103,12 @@ public class PratichespecialiController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     if (persistAction == PersistAction.CREATE) {
                         getFacade().create(selected);
-                    } else {
-                        getFacade().edit(selected, copySelected);
+                    } else { //...UPDATE
+                        getFacade().edit(selected, copySelected);                       
+                        if (!JsfUtil.isValidationFailed()) {
+                            selected = null; // Remove selection
+                            items = null;    // Invalidate list of items to trigger re-query.
+                        }
                     }
                 } else {
                     getFacade().remove(selected);
@@ -106,6 +119,8 @@ public class PratichespecialiController implements Serializable {
                 Throwable cause = ex.getCause();
                 if (cause != null) {
                     msg = cause.getLocalizedMessage();
+                     if(msg.contains("Cannot delete or update a parent row"))
+                        msg=ResourceBundle.getBundle("/Bundle").getString("MySQLException_1451");
                 }
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);

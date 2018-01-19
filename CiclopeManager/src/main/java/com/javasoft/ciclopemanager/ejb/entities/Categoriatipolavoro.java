@@ -134,5 +134,8 @@ public class Categoriatipolavoro implements Serializable,
     public Object getId() {
         return this.idCategoriaTipoLavoro;
     }
-    
+     @Override
+    public void setId(Object cloneId){
+        this.idCategoriaTipoLavoro = (Integer) cloneId;
+    }
 }

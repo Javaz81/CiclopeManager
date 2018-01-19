@@ -4,6 +4,7 @@ import com.javasoft.ciclopemanager.ejb.entities.Categoriatipolavoro;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil.PersistAction;
 import com.javasoft.ciclopemanager.ejb.session.CategoriatipolavoroFacade;
+import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +29,7 @@ public class CategoriatipolavoroController implements Serializable {
     private List<Categoriatipolavoro> items = null;
     private Categoriatipolavoro selected;
     private Categoriatipolavoro copySelected;
+    private List<Categoriatipolavoro> filteredItems;
 
     public CategoriatipolavoroController() {
     }
@@ -45,7 +47,13 @@ public class CategoriatipolavoroController implements Serializable {
 
     protected void initializeEmbeddableKey() {
     }
+ public List<Categoriatipolavoro> getFilteredItems() {
+        return filteredItems;
+    }
 
+    public void setFilteredItems(List<Categoriatipolavoro> filteredItems) {
+        this.filteredItems = filteredItems;
+    }
     private CategoriatipolavoroFacade getFacade() {
         return ejbFacade;
     }
@@ -94,18 +102,24 @@ public class CategoriatipolavoroController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     if (persistAction == PersistAction.CREATE) {
                         getFacade().create(selected);
-                    } else {
-                        getFacade().edit(selected, copySelected);
+                    } else { //...UPDATE
+                        getFacade().edit(selected, copySelected);                       
+                        if (!JsfUtil.isValidationFailed()) {
+                            selected = null; // Remove selection
+                            items = null;    // Invalidate list of items to trigger re-query.
+                        }
                     }
                 } else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (EJBException | FacadeException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
                     msg = cause.getLocalizedMessage();
+                     if(msg.contains("Cannot delete or update a parent row"))
+                        msg=ResourceBundle.getBundle("/Bundle").getString("MySQLException_1451");
                 }
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);

@@ -49,6 +49,15 @@ public class ArticoloFacade extends AbstractFacade<Articolo> {
             if (!result.isEmpty()) {
                 throw new FacadeException(ResourceBundle.getBundle("/Bundle")
                         .getString("IdNotUpdatable"));
+            }else{
+                //Remove item and recreate it with new id
+                Object newId = entity.getId();
+                entity.setId(beforeEdit.getId());
+                super.remove(entity);
+                Articolo newItem = entity.deepClone();
+                newItem.setId(newId);
+                super.create(newItem);
+                entity = super.find(newId);
             }
         } else {
             //otherwise try merging changed entity.

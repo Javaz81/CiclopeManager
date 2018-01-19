@@ -115,4 +115,8 @@ public class Pratichespeciali implements Serializable, DeepClonable<Pratichespec
         return this.idPraticaSpeciale;
     }
     
+     @Override
+    public void setId(Object cloneId){
+        this.idPraticaSpeciale = (Integer) cloneId;
+    }
 }

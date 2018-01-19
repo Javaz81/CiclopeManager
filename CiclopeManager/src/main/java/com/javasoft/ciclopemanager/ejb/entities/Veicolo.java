@@ -206,4 +206,8 @@ public class Veicolo implements Serializable, DeepClonable<Veicolo> {
         return this.idVeicolo;
     }
     
+     @Override
+    public void setId(Object cloneId){
+        this.idVeicolo = (Integer) cloneId;
+    }
 }

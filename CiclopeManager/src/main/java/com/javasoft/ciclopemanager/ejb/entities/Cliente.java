@@ -176,4 +176,9 @@ public class Cliente implements Serializable, DeepClonable<Cliente> {
         return this.idCliente;
     }
     
+     @Override
+    public void setId(Object cloneId){
+        this.idCliente = (Integer) cloneId;
+    }
+   
 }

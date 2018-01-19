@@ -4,9 +4,11 @@ import com.javasoft.ciclopemanager.ejb.entities.Tipolavoro;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil;
 import com.javasoft.ciclopemanager.ejb.jsf.util.JsfUtil.PersistAction;
 import com.javasoft.ciclopemanager.ejb.session.TipolavoroFacade;
+import com.javasoft.ciclopemanager.ejb.session.exception.FacadeException;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +30,7 @@ public class TipolavoroController implements Serializable {
     private List<Tipolavoro> items = null;
     private Tipolavoro selected;
     private Tipolavoro copySelected;
+    private List<Tipolavoro> filteredItems;
 
     public TipolavoroController() {
     }
@@ -46,6 +49,14 @@ public class TipolavoroController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
+     public List<Tipolavoro> getFilteredItems() {
+        return filteredItems;
+    }
+
+    public void setFilteredItems(List<Tipolavoro> filteredItems) {
+        this.filteredItems = filteredItems;
+    }
+    
     private TipolavoroFacade getFacade() {
         return ejbFacade;
     }
@@ -94,18 +105,24 @@ public class TipolavoroController implements Serializable {
                 if (persistAction != PersistAction.DELETE) {
                     if (persistAction == PersistAction.CREATE) {
                         getFacade().create(selected);
-                    } else {
-                        getFacade().edit(selected, copySelected);
+                    } else { //...UPDATE
+                        getFacade().edit(selected, copySelected);                       
+                        if (!JsfUtil.isValidationFailed()) {
+                            selected = null; // Remove selection
+                            items = null;    // Invalidate list of items to trigger re-query.
+                        }
                     }
                 } else {
                     getFacade().remove(selected);
                 }
                 JsfUtil.addSuccessMessage(successMessage);
-            } catch (EJBException ex) {
+            } catch (EJBException | FacadeException ex) {
                 String msg = "";
                 Throwable cause = ex.getCause();
                 if (cause != null) {
                     msg = cause.getLocalizedMessage();
+                     if(msg.contains("Cannot delete or update a parent row"))
+                        msg=ResourceBundle.getBundle("/Bundle").getString("MySQLException_1451");
                 }
                 if (msg.length() > 0) {
                     JsfUtil.addErrorMessage(msg);
@@ -119,7 +136,17 @@ public class TipolavoroController implements Serializable {
             }
         }
     }
-
+     public boolean filterByCategoria(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim();
+        if(filterText == null||filterText.equals("")) {
+            return true;
+        }
+         
+        if(value == null) {
+            return false;
+        }
+        return value.toString().contains(filterText);        
+    }
     public Tipolavoro getTipolavoro(java.lang.Integer id) {
         return getFacade().find(id);
     }

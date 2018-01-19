@@ -18,6 +18,9 @@
                 <p:panel header="#{bundle.ListTipolavoroTitle}">
                     <p:dataTable id="datalist" value="#{tipolavoroController.items}" var="item"
                                  selectionMode="single" selection="#{tipolavoroController.selected}"
+                                 widgetVar="itemsTable"
+                                 emptyMessage="#{bundle.ListTipolavorospecialiEmpty}" 
+                                 filteredValue="#{tipolavoroController.filteredItems}"
                                  paginator="true"
                                  rowKey="#{item.idTipoLavoro}"
                                  rows="10"
@@ -26,30 +29,35 @@
 
                         <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
                         <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
-                        <p:column>
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Cerca su tutto:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('itemsTable').filter()" style="width:150px" placeholder="Cerca..."/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.idTipoLavoro}" filterBy="#{item.idTipoLavoro}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTipolavoroTitle_idTipoLavoro}"/>
                             </f:facet>
                             <h:outputText value="#{item.idTipoLavoro}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.codice}" filterBy="#{item.codice}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTipolavoroTitle_codice}"/>
                             </f:facet>
                             <h:outputText value="#{item.codice}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.descrizione}" filterBy="#{item.descrizione}" filterMatchMode="contains">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTipolavoroTitle_descrizione}"/>
                             </f:facet>
                             <h:outputText value="#{item.descrizione}"/>
                         </p:column>
-                        <p:column>
+                        <p:column sortBy="#{item.categoria.nome}" filterBy="#{item.categoria.nome}"  filterFunction="#{tipolavoroController.filterByCategoria}">
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTipolavoroTitle_categoria}"/>
                             </f:facet>
-                            <h:outputText value="#{item.categoria}"/>
+                            <h:outputText value="#{item.categoria.nome}"/>
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tipolavoroController.prepareCreate}" update=":TipolavoroCreateForm" oncomplete="PF('TipolavoroCreateDialog').show()"/>
