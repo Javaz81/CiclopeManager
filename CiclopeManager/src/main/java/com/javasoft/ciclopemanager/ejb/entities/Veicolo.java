@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Veicolo.findByTarga", query = "SELECT v FROM Veicolo v WHERE v.targa = :targa")
     , @NamedQuery(name = "Veicolo.findByAnno", query = "SELECT v FROM Veicolo v WHERE v.anno = :anno")
     , @NamedQuery(name = "Veicolo.findByTipo", query = "SELECT v FROM Veicolo v WHERE v.tipo = :tipo")
-    , @NamedQuery(name = "Veicolo.findByMatricola", query = "SELECT v FROM Veicolo v WHERE v.matricola = :matricola")})
+    , @NamedQuery(name = "Veicolo.findByMatricola", query = "SELECT v FROM Veicolo v WHERE v.matricola = :matricola")
+    , @NamedQuery(name = "Veicolo.findByPortataMax", query = "SELECT v FROM Veicolo v WHERE v.portata_max = :portata_max")})
 public class Veicolo implements Serializable, DeepClonable<Veicolo> {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +67,8 @@ public class Veicolo implements Serializable, DeepClonable<Veicolo> {
     @Size(min = 1, max = 30)
     @Column(name = "matricola")
     private String matricola;
+    @Column(name = "portata_max")
+    private Integer portata_max;
     @JoinColumn(name = "cliente", referencedColumnName = "idCliente")
     @ManyToOne(fetch = FetchType.EAGER)
     private Cliente cliente;
@@ -138,6 +141,14 @@ public class Veicolo implements Serializable, DeepClonable<Veicolo> {
         this.matricola = matricola;
     }
 
+    public Integer getPortata_max() {
+        return portata_max;
+    }
+
+    public void setPortata_max(Integer portata_max) {
+        this.portata_max = portata_max;
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -168,30 +179,32 @@ public class Veicolo implements Serializable, DeepClonable<Veicolo> {
 
     @Override
     public String toString() {
-        return this.marca + " " 
-                + this.modello + " " 
+        return this.marca + " "
+                + this.modello + " "
                 + this.matricola + " "
                 + this.targa + " ["
-                + this.tipo + "] ";
+                + this.tipo + "] "
+                + this.portata_max;
     }
 
     @Override
     public Veicolo deepClone() {
-       Veicolo result = new Veicolo();
-       result.anno = this.anno;
-       result.cliente = this.cliente;
-       result.idVeicolo = this.idVeicolo;
-       result.marca = this.marca;
-       result.matricola =this.matricola;
-       result.modello = this.modello;
-       result.targa = this.targa;
-       result.tipo = this.tipo;
-       return result;
+        Veicolo result = new Veicolo();
+        result.anno = this.anno;
+        result.cliente = this.cliente;
+        result.idVeicolo = this.idVeicolo;
+        result.marca = this.marca;
+        result.matricola = this.matricola;
+        result.modello = this.modello;
+        result.targa = this.targa;
+        result.tipo = this.tipo;
+        result.portata_max = this.portata_max;
+        return result;
     }
 
     @Override
     public void restoreFromClone(Veicolo clone) {
-        this.anno=clone.anno;
+        this.anno = clone.anno;
         this.cliente = clone.cliente;
         this.idVeicolo = clone.idVeicolo;
         this.marca = clone.marca;
@@ -199,15 +212,16 @@ public class Veicolo implements Serializable, DeepClonable<Veicolo> {
         this.modello = clone.modello;
         this.targa = clone.targa;
         this.tipo = clone.tipo;
+        this.portata_max = clone.portata_max;
     }
 
     @Override
     public Object getId() {
         return this.idVeicolo;
     }
-    
-     @Override
-    public void setId(Object cloneId){
+
+    @Override
+    public void setId(Object cloneId) {
         this.idVeicolo = (Integer) cloneId;
     }
 }

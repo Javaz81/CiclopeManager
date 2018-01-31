@@ -22,10 +22,12 @@
                         <p:inputText id="targa" value="#{veicoloController.selected.targa}" title="#{bundle.EditVeicoloTitle_targa}" />
                         <p:outputLabel value="#{bundle.EditVeicoloLabel_anno}" for="anno" />
                         <p:inputText id="anno" value="#{veicoloController.selected.anno}" title="#{bundle.EditVeicoloTitle_anno}" />
-                        <p:outputLabel value="#{bundle.EditVeicoloLabel_tipo}" for="tipo" />
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_tipo}" for="tipo" />                        
                         <p:inputText id="tipo" value="#{veicoloController.selected.tipo}" title="#{bundle.EditVeicoloTitle_tipo}" />
                         <p:outputLabel value="#{bundle.EditVeicoloLabel_matricola}" for="matricola" />
                         <p:inputText id="matricola" value="#{veicoloController.selected.matricola}" title="#{bundle.EditVeicoloTitle_matricola}" required="true" requiredMessage="#{bundle.EditVeicoloRequiredMessage_matricola}"/>
+                        <p:outputLabel value="#{bundle.EditVeicoloLabel_portata_max}" for="portata_max" />
+                        <p:inputText id="portata_max" value="#{veicoloController.selected.portata_max}" title="#{bundle.EditVeicoloTitle_portata_max}" />
                         <p:outputLabel value="#{bundle.EditVeicoloLabel_cliente}" for="cliente" />
                         <p:selectOneMenu id="cliente" value="#{veicoloController.selected.cliente}" >
                             <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>

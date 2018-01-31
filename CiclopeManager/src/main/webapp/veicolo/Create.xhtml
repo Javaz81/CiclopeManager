@@ -26,6 +26,8 @@
                         <p:inputText id="tipo" value="#{veicoloController.selected.tipo}" title="#{bundle.CreateVeicoloTitle_tipo}" />
                         <p:outputLabel value="#{bundle.CreateVeicoloLabel_matricola}" for="matricola" />
                         <p:inputText id="matricola" value="#{veicoloController.selected.matricola}" title="#{bundle.CreateVeicoloTitle_matricola}" required="true" requiredMessage="#{bundle.CreateVeicoloRequiredMessage_matricola}"/>
+                        <p:outputLabel value="#{bundle.CreateVeicoloLabel_portata_max}" for="portata_max" />
+                        <p:inputText id="portata_max" value="#{veicoloController.selected.portata_max}" title="#{bundle.CreateVeicoloTitle_portata_max}" />
                         <p:outputLabel value="#{bundle.CreateVeicoloLabel_cliente}" for="cliente" />
                         <p:selectOneMenu id="cliente" value="#{veicoloController.selected.cliente}" >
                             <f:selectItems value="#{clienteController.itemsAvailableSelectOne}"

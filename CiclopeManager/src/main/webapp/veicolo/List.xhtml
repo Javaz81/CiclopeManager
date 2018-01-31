@@ -79,6 +79,12 @@
                             </f:facet>
                             <h:outputText value="#{item.matricola}"/>
                         </p:column>
+                        <p:column sortBy="#{item.portata_max}" filterBy="#{item.portata_max}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListVeicoloTitle_portata_max}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.portata_max}"/>
+                        </p:column>
                         <p:column sortBy="#{item.cliente.nome}" filterBy="#{item.cliente.nome}" filterFunction="#{veicoloController.filterByCliente}" >
                             <f:facet name="header" >
                                 <h:outputText value="#{bundle.ListVeicoloTitle_cliente}"/>
