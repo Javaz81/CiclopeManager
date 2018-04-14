@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
@@ -29,7 +28,8 @@
                         <h:outputText value="#{bundle.ViewVeicoloLabel_portata_max}"/>
                         <h:outputText value="#{veicoloController.selected.portata_max}" title="#{bundle.ViewVeicoloTitle_portata_max}"/>
                         <h:outputText value="#{bundle.ViewVeicoloLabel_cliente}"/>
-                        <h:outputText value="#{veicoloController.selected.cliente}" title="#{bundle.ViewVeicoloTitle_cliente}"/>
+                        <h:outputText value="#{veicoloController.selected.cliente.nome} #{veicoloController.selected.cliente.cognome}"
+                                      title="#{bundle.ViewVeicoloTitle_cliente}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="VeicoloViewDialog.hide()"/>
                 </h:panelGroup>

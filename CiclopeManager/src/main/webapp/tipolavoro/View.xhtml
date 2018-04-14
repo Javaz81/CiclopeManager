@@ -19,7 +19,7 @@
                         <h:outputText value="#{bundle.ViewTipolavoroLabel_descrizione}"/>
                         <h:outputText value="#{tipolavoroController.selected.descrizione}" title="#{bundle.ViewTipolavoroTitle_descrizione}"/>
                         <h:outputText value="#{bundle.ViewTipolavoroLabel_categoria}"/>
-                        <h:outputText value="#{tipolavoroController.selected.categoria}" title="#{bundle.ViewTipolavoroTitle_categoria}"/>
+                        <h:outputText value="#{tipolavoroController.selected.categoria.nome}" title="#{bundle.ViewTipolavoroTitle_categoria}"/>
                     </p:panelGrid>
                     <p:commandButton value="#{bundle.Close}" onclick="TipolavoroViewDialog.hide()"/>
                 </h:panelGroup>
